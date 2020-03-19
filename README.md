@@ -13,3 +13,9 @@ Extend the program to generate a three three address code of the expression.
 2. yacc -d calc.y
 3. g++ lex.yy.c y.yab.c -w
 4. ./a.out
+
+##### Group
+1. Dibyajyoti Dhar     - 67 
+2. Devesh Jalan        - 71
+3. Rohit Chattopadhyay - 73
+4. Priti Shaw          - 76
