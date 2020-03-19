@@ -1,0 +1,73 @@
+Enter an expression using numbers and operators : +,-,*,/ only
+=>25+14/2*3-4
+
+	Result: 42.000000
+
+Inorder Traversal
+ *** 25 *** N
+ *** 46.000000 *** +
+ *** 14 *** N
+ *** 7.000000 *** /
+ *** 2 *** N
+ *** 21.000000 *** *
+ *** 3 *** N
+ *** 42.000000 *** -
+ *** 4 *** N
+
+Parse Tree
+        .---[25 , N]
+    .---[46.000000 , +]
+   |   |        .---[14 , N]
+   |   |    .---[7.000000 , /]
+   |   |   |    `---[2 , N]
+   |    `---[21.000000 , *]
+   |        `---[3 , N]
+---[42.000000 , -]
+    `---[4 , N]
+
+Three address code of the expression is given below:
+	t0	=	25
+	t1	=	14
+	t2	=	2
+	t3	=	t1	/	t2
+	t4	=	3
+	t5	=	t3	*	t4
+	t6	=	t0	+	t5
+	t7	=	4
+	t8	=	t6	-	t7
+Verification: 
+	No. of nodes in the tree = 9
+
+Enter next expression or 'exit' to end session
+=>2*6-7
+
+Result: 5
+
+Inorder Traversal
+ *** 2 *** N
+ *** 12 *** *
+ *** 6 *** N
+ *** 5 *** -
+ *** 7 *** N
+
+Parse Tree
+        .---[2 , N]
+    .---[12 , *]
+   |    `---[6 , N]
+---[5 , -]
+    `---[7 , N]
+
+Three address code of the expression is given below:
+	t0	=	2
+	t1	=	6
+	t2	=	t0	*	t1
+	t3	=	7
+	t4	=	t2	-	t3
+Verification: 
+	No. of nodes in the tree = 5
+
+Enter next expression or 'exit' to end session
+=>exit
+
+	-----Session Terminated-----
+
