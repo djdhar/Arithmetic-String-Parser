@@ -119,6 +119,31 @@ void printTree(Node *root, Trunk *prev, bool isLeft)
     printTree(root->right, trunk, false);
 }
 
+//util function 
+int threeaddresscodeutil(Node* nodde, int current_count)
+{
+	if(nodde->oprator=='N')
+	{
+		cout<<"\tt"<<current_count<<"\t=\t"<<nodde->name<<endl;
+		return current_count+1;
+	}
+	int left=threeaddresscodeutil(nodde->left,current_count);
+	int right=threeaddresscodeutil(nodde->right,left);
+	int center=right;
+	cout<<"\tt"<<center<<"\t="<<"\tt"<<left-1<<"\t"<<nodde->oprator<<"\tt"<<right-1<<endl;
+	return center+1;
+}
+
+
+//3 address code Form function
+void threeaddresscodefunction(Node* root)
+{
+	cout<<endl<<"Three address code of the expression is given below:"<<endl;
+	int count=threeaddresscodeutil(root,0);
+	cout<<"Verification: \n\tNo. of nodes in the tree = "<<count<<endl;
+}
+
+
 void yyerror(const char* s);
 %}
 
@@ -146,38 +171,39 @@ calculation:
 ;
 
 line: T_NEWLINE
-    | mixed_expression T_NEWLINE { printf("\tResult: %f\n", $1);}
-    | expression T_NEWLINE { printf("\tResult: %i\n", $1); }
-    | T_QUIT T_NEWLINE { cout<<"Inorder Traversal"<<endl; Inorder(stk.top()); cout<<endl; printTree(stk.top(),nullptr,false);  exit(0);}
+    | mixed_expression T_NEWLINE { printf("\n\tResult: %f\n\n", $1);cout<<"Inorder Traversal"<<endl; Inorder(stk.top()); cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);threeaddresscodefunction(stk.top());cout<<"\nEnter next expression or 'exit' to end session"<<endl<<"=>";}
+    | expression T_NEWLINE { printf("\nResult: %i\n\n", $1);cout<<"Inorder Traversal"<<endl; Inorder(stk.top()); cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);threeaddresscodefunction(stk.top());cout<<"\nEnter next expression or 'exit' to end session"<<endl<<"=>"; }
+    | T_QUIT T_NEWLINE {   cout<<"\n\t-----Session Terminated-----\n"<<endl;exit(0);}
 ;
 //cout<<to_string($$)<<endl ; Node *node = new Node($1,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);
-mixed_expression: T_FLOAT                 		 { $$ = $1; cout<<to_string($$)<<endl ;Node *leaf = new Node($1); stk.push(leaf); }
-	  | mixed_expression T_PLUS mixed_expression	 { $$ = $1 + $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
-	  | mixed_expression T_MINUS mixed_expression	 { $$ = $1 - $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'-'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
-	  | mixed_expression T_MULTIPLY mixed_expression { $$ = $1 * $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'*'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
-	  | mixed_expression T_DIVIDE mixed_expression	 { $$ = $1 / $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'/'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
+mixed_expression: T_FLOAT                 		 { $$ = $1; /*cout<<to_string($$)<<endl*/ ;Node *leaf = new Node($1); stk.push(leaf); }
+	  | mixed_expression T_PLUS mixed_expression	 { $$ = $1 + $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | mixed_expression T_MINUS mixed_expression	 { $$ = $1 - $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'-'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
+	  | mixed_expression T_MULTIPLY mixed_expression { $$ = $1 * $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'*'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
+	  | mixed_expression T_DIVIDE mixed_expression	 { $$ = $1 / $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'/'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
 	  | T_LEFT mixed_expression T_RIGHT		 { $$ = $2; }
-	  | expression T_PLUS mixed_expression	 	 { $$ = $1 + $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
-	  | expression T_MINUS mixed_expression	 	 { $$ = $1 - $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'-'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
-	  | expression T_MULTIPLY mixed_expression 	 { $$ = $1 * $3; cout<<to_string($$)<<endl ; Node *node = new Node($1,'*'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
-	  | expression T_DIVIDE mixed_expression	 { $$ = $1 / $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'/'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
-	  | mixed_expression T_PLUS expression	 	 { $$ = $1 + $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
-	  | mixed_expression T_MINUS expression	 	 { $$ = $1 - $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'-'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
-	  | mixed_expression T_MULTIPLY expression 	 { $$ = $1 * $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'*'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
-	  | mixed_expression T_DIVIDE expression	 { $$ = $1 / $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'/'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
-	  | expression T_DIVIDE expression	{   $$ = $1 / (float)$3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'/'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | expression T_PLUS mixed_expression	 	 { $$ = $1 + $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
+	  | expression T_MINUS mixed_expression	 	 { $$ = $1 - $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'-'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | expression T_MULTIPLY mixed_expression 	 { $$ = $1 * $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($1,'*'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
+	  | expression T_DIVIDE mixed_expression	 { $$ = $1 / $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'/'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | mixed_expression T_PLUS expression	 	 { $$ = $1 + $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | mixed_expression T_MINUS expression	 	 { $$ = $1 - $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'-'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | mixed_expression T_MULTIPLY expression 	 { $$ = $1 * $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'*'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | mixed_expression T_DIVIDE expression	 { $$ = $1 / $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'/'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | expression T_DIVIDE expression	{   $$ = $1 / (float)$3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'/'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
 ;
 
-expression: T_INT						{ $$ = $1; cout<<to_string($$)<<endl ;Node *leaf = new Node(to_string($1)); stk.push(leaf); }
-	  | expression T_PLUS expression	{ $$ = $1 + $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
-	  | expression T_MINUS expression	{ $$ = $1 - $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'-'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
-	  | expression T_MULTIPLY expression	{ $$ = $1 * $3; cout<<to_string($$)<<endl ; Node *node = new Node($$,'*'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+expression: T_INT						{ $$ = $1; /*cout<<to_string($$)<<endl*/ ;Node *leaf = new Node(to_string($1)); stk.push(leaf); }
+	  | expression T_PLUS expression	{ $$ = $1 + $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | expression T_MINUS expression	{ $$ = $1 - $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'-'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
+	  | expression T_MULTIPLY expression	{ $$ = $1 * $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'*'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
 	  | T_LEFT expression T_RIGHT		{ $$ = $2; }
 ;
 
 %%
 
 int main() {
+	cout<<"Enter an expression using numbers and operators : +,-,*,/ only"<<endl<<"=>";
 	yyin = stdin;
 
 	do {
@@ -192,4 +218,3 @@ void yyerror(const char* s) {
 	fprintf(stderr, "Parse error: %s\n", s);
 	exit(1);
 }
-
