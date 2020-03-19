@@ -54,11 +54,38 @@ Node *root= parent;
 stack<Node*> stk;
 
 void Inorder(Node* root){
+
 	if(root){
 		Inorder(root->left);
+			fstream f;
+			f.open("inorder.csv",ios::app);
+			f<<root->name<<" "<<root->oprator<<",";
+			f.close();
 			cout<<" *** "<<root->name<<" *** "<<root->oprator<<endl;
 		Inorder(root->right);
 	}
+
+}
+
+void Preorder(Node* root){
+	if(root){
+		fstream f;
+		f.open("preorder.csv",ios::app);
+		f<<root->name<<" "<<root->oprator<<",";
+		cout<<" *** "<<root->name<<" *** "<<root->oprator<<endl;
+		f.close();
+		Preorder(root->left);
+		Preorder(root->right);
+	}
+}
+
+void makefree(){
+	fstream f;
+	f.open("preorder.csv",ios::out);
+	f.close();
+	fstream f2;
+	f2.open("inorder.csv",ios::out);
+	f2.close();
 }
 
 struct Trunk
@@ -171,7 +198,7 @@ calculation:
 ;
 
 line: T_NEWLINE
-    | mixed_expression T_NEWLINE { printf("\n\tResult: %f\n\n", $1);cout<<"Inorder Traversal"<<endl; Inorder(stk.top()); cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);threeaddresscodefunction(stk.top());cout<<"\nEnter next expression or 'exit' to end session"<<endl<<"=>";}
+    | mixed_expression T_NEWLINE { printf("\n\tResult: %f\n\n", $1); makefree(); cout<<"Inorder Traversal"<<endl; Inorder(stk.top()); cout<<endl; cout<<"Preorder Traversal"<<endl; Preorder(stk.top()); cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);threeaddresscodefunction(stk.top());cout<<"\nEnter next expression or 'exit' to end session"<<endl<<"=>";}
     | expression T_NEWLINE { printf("\nResult: %i\n\n", $1);cout<<"Inorder Traversal"<<endl; Inorder(stk.top()); cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);threeaddresscodefunction(stk.top());cout<<"\nEnter next expression or 'exit' to end session"<<endl<<"=>"; }
     | T_QUIT T_NEWLINE {   cout<<"\n\t-----Session Terminated-----\n"<<endl;exit(0);}
 ;
