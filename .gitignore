@@ -1,0 +1,5 @@
+/processor/output/*
+*.exe
+*.out
+*.yy.c
+*.tab.*

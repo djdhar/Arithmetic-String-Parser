@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <bits/stdc++.h>
 #include<string>
+#define THREE_ADDRESS_FILE "output\\address.txt"
+#define INORDER_FILE "output\\inorder.csv"
+#define PREORDER_FILE "output\\preorder.csv"
+
 using namespace std;
 
 extern int yylex();
@@ -52,13 +56,14 @@ class Node{
 Node *parent = new Node("root");
 Node *root= parent;
 stack<Node*> stk;
+fstream aOP;
 
 void Inorder(Node* root){
 
 	if(root){
 		Inorder(root->left);
 			fstream f;
-			f.open("inorder.csv",ios::app);
+			f.open(INORDER_FILE,ios::app);
 			f<<root->name<<" "<<root->oprator<<",";
 			f.close();
 			cout<<" *** "<<root->name<<" *** "<<root->oprator<<endl;
@@ -70,7 +75,7 @@ void Inorder(Node* root){
 void Preorder(Node* root){
 	if(root){
 		fstream f;
-		f.open("preorder.csv",ios::app);
+		f.open(PREORDER_FILE,ios::app);
 		f<<root->name<<" "<<root->oprator<<",";
 		cout<<" *** "<<root->name<<" *** "<<root->oprator<<endl;
 		f.close();
@@ -81,10 +86,10 @@ void Preorder(Node* root){
 
 void makefree(){
 	fstream f;
-	f.open("preorder.csv",ios::out);
+	f.open(PREORDER_FILE,ios::out);
 	f.close();
 	fstream f2;
-	f2.open("inorder.csv",ios::out);
+	f2.open(INORDER_FILE,ios::out);
 	f2.close();
 }
 
@@ -148,16 +153,20 @@ void printTree(Node *root, Trunk *prev, bool isLeft)
 
 //util function 
 int threeaddresscodeutil(Node* nodde, int current_count)
-{
+{	
 	if(nodde->oprator=='N')
 	{
-		cout<<"\tt"<<current_count<<"\t=\t"<<nodde->name<<endl;
+		aOP.open(THREE_ADDRESS_FILE, ios::app);
+		aOP<<"\tt"<<current_count<<"\t=\t"<<nodde->name<<endl;
+		aOP.close();
 		return current_count+1;
 	}
 	int left=threeaddresscodeutil(nodde->left,current_count);
 	int right=threeaddresscodeutil(nodde->right,left);
 	int center=right;
-	cout<<"\tt"<<center<<"\t="<<"\tt"<<left-1<<"\t"<<nodde->oprator<<"\tt"<<right-1<<endl;
+	aOP.open(THREE_ADDRESS_FILE, ios::app);
+	aOP<<"\tt"<<center<<"\t="<<"\tt"<<left-1<<"\t"<<nodde->oprator<<"\tt"<<right-1<<endl;
+	aOP.close();
 	return center+1;
 }
 
@@ -165,9 +174,13 @@ int threeaddresscodeutil(Node* nodde, int current_count)
 //3 address code Form function
 void threeaddresscodefunction(Node* root)
 {
-	cout<<endl<<"Three address code of the expression is given below:"<<endl;
+	aOP.open(THREE_ADDRESS_FILE, ios::app);
+	aOP<<endl<<"Three address code of the expression is given below:"<<endl;	
+	aOP.close();
 	int count=threeaddresscodeutil(root,0);
-	cout<<"Verification: \n\tNo. of nodes in the tree = "<<count<<endl;
+	aOP.open(THREE_ADDRESS_FILE, ios::app);
+	aOP<<"Verification: \n\tNo. of nodes in the tree = "<<count<<endl;
+	aOP.close();
 }
 
 
@@ -198,11 +211,11 @@ calculation:
 ;
 
 line: T_NEWLINE
-    | mixed_expression T_NEWLINE { printf("\n\tResult: %f\n\n", $1); makefree(); cout<<"Inorder Traversal"<<endl; Inorder(stk.top()); cout<<endl; cout<<"Preorder Traversal"<<endl; Preorder(stk.top()); cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);threeaddresscodefunction(stk.top());cout<<"\nEnter next expression or 'exit' to end session"<<endl<<"=>";}
-    | expression T_NEWLINE { printf("\nResult: %i\n\n", $1);cout<<"Inorder Traversal"<<endl; Inorder(stk.top()); cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);threeaddresscodefunction(stk.top());cout<<"\nEnter next expression or 'exit' to end session"<<endl<<"=>"; }
+    | mixed_expression T_NEWLINE { aOP.open(THREE_ADDRESS_FILE, ios::out);aOP<<"\n\tResult: "<<$1<<"\n";aOP.close(); makefree();cout<<"Result: "<<$1<<"\n"; cout<<endl; cout<<"Preorder Traversal"<<endl; Preorder(stk.top()); cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);threeaddresscodefunction(stk.top());exit(0);}
+    | expression T_NEWLINE { aOP.open(THREE_ADDRESS_FILE, ios::out);aOP<<"Result: "<<$1<<"\n";aOP.close();cout<<"Result: "<<$1<<"\n";cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);Preorder(stk.top());Inorder(stk.top());threeaddresscodefunction(stk.top()); }
     | T_QUIT T_NEWLINE {   cout<<"\n\t-----Session Terminated-----\n"<<endl;exit(0);}
 ;
-//cout<<to_string($$)<<endl ; Node *node = new Node($1,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);
+
 mixed_expression: T_FLOAT                 		 { $$ = $1; /*cout<<to_string($$)<<endl*/ ;Node *leaf = new Node($1); stk.push(leaf); }
 	  | mixed_expression T_PLUS mixed_expression	 { $$ = $1 + $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'+'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);} 
 	  | mixed_expression T_MINUS mixed_expression	 { $$ = $1 - $3; /*cout<<to_string($$)<<endl*/ ; Node *node = new Node($$,'-'); node->right=stk.top(); stk.pop(); node->left=stk.top(); stk.pop(); stk.push(node);}
@@ -229,9 +242,14 @@ expression: T_INT						{ $$ = $1; /*cout<<to_string($$)<<endl*/ ;Node *leaf = ne
 
 %%
 
-int main() {
-	cout<<"Enter an expression using numbers and operators : +,-,*,/ only"<<endl<<"=>";
-	yyin = stdin;
+int main(int argc,char* argv[]) {
+    FILE* fileInput;
+	if((fileInput=fopen(argv[1],"r"))==NULL)
+        {
+        printf("Error reading files, the program terminates immediately\n");
+        exit(0);
+        }
+	yyin = fileInput;
 
 	do {
 		yyparse();
