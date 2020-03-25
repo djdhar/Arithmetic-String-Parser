@@ -37,11 +37,12 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-		    <div class="col-8-sm">
-				<h2 style="text-align: center;">Anonnated Parse Tree</h2>
+		    <div class="col-sm-8 col-xs-12" style="text-align: center;">
+				<h2>Anonnated Parse Tree</h2>
+				<p style="font-weight: 500;">{{expression}}</p>
 				<div id="tree-annonated"></div>
 			</div>
-			<div id="three-address" class="col-4-sm">
+			<div id="three-address" class="col-sm-4 col-xs-12">
 				<h2>Three Address Code</h2>
 				<pre style="height: 50vh;overflow-y: auto;">{{address}}</pre>
 				<marquee onclick="newExpression()" style="cursor: pointer;border: 1px solid;padding: 0.5em;border-left: none;border-right: none;">Click to enter new expression</marquee>

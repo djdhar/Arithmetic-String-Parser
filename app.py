@@ -8,8 +8,8 @@ os.system("chmod +x ./processor/a.out")
 def entry_point(e):
     expression = request.args.get("exp")
     if expression is not None:
-        expression = bytes(html.unescape(expression), 'utf-8')+b'\n'
-        three_address = subprocess.check_output("./processor/a.out", input=expression)
+        exp = bytes(html.unescape(expression), 'utf-8')+b'\n'
+        three_address = subprocess.check_output("./processor/a.out", input=exp)
         three_address = str(three_address,'utf-8')
         try:
             json_tree = json.loads(subprocess.check_output("python treeToJson.py", shell=True))
@@ -18,7 +18,7 @@ def entry_point(e):
     else:
         three_address = "Enter valid expression"
         json_tree = {"text": {"data":"Please enter the Expression"}}
-    return render_template('index.html', address=three_address,tree=json_tree)
+    return render_template('index.html', address=three_address,tree=json_tree,expression=html.unescape(expression))
 
 @app.route('/assets/<path:path>')
 def send_assets(path):
