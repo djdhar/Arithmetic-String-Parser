@@ -1,0 +1,82 @@
+<!-- public/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Compiler Lab Project</title>
+	<!-- stylesheets -->
+	<script>
+		function newExpression(){
+			let exp = prompt('Please Enter your expression');
+			if(exp != null){
+				exp = encodeURIComponent(exp)
+				window.location = "./?exp="+exp;
+			}
+			else
+				window.location.reload();	
+		}
+		var field = "exp";
+		var url = window.location.href;
+		var isPresent = false
+		if(url.indexOf('?' + field + '=') != -1)
+			isPresent = true;
+		else if(url.indexOf('&' + field + '=') != -1)
+			isPresent = true;
+		if(!isPresent){
+			newExpression()
+		}
+	</script>
+	<link rel="stylesheet" href="/assets/Treant.css" type="text/css"/>
+    <link rel="stylesheet" href="/assets/style.css" type="text/css"/>
+	<link rel="stylesheet" href="/assets/grid.css" type="text/css"/>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+		    <div class="col-8-sm">
+				<h2 style="text-align: center;">Anonnated Parse Tree</h2>
+				<div id="tree-annonated"></div>
+			</div>
+			<div id="three-address" class="col-4-sm">
+				<h2>Three Address Code</h2>
+				<pre style="height: 50vh;overflow-y: auto;">{{address}}</pre>
+				<p>
+					<hr/>
+					<marquee onclick="newExpression()" style="cursor: pointer;">Click to enter new expression</marquee>
+					<hr/>
+					<small>
+					Developed for JU BCSE Compiler Lab Assignment<br/>
+					<em>Members:</em>
+	<br/>67	Dibyajyoti Dhar
+	<br/>71	Devesh Jalan
+	<br/>73	Rohit Rajat Chattopadhyay
+	<br/>76	Priti Shaw
+</pre>
+
+				</small>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- javascript -->
+    <script src="/assets/raphael.js"></script>
+	<script src="/assets/Treant.js"></script>
+	<script>		
+		var simple_chart_config = {
+			chart: {
+				container: "#tree-annonated",
+				nodeAlign: "BOTTOM",
+				siblingSeparation: 100,
+				node : {
+					collapsable: true,
+				},
+				connectors : {
+					type: "straight",
+				}
+			},			
+			nodeStructure: {{tree|tojson|safe}}
+		};
+		var my_chart = new Treant(simple_chart_config);
+	</script>
+</body>
+</html>

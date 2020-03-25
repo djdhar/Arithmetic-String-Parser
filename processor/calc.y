@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <bits/stdc++.h>
 #include<string>
-#define THREE_ADDRESS_FILE "output\\address.txt"
-#define INORDER_FILE "output\\inorder.csv"
-#define PREORDER_FILE "output\\preorder.csv"
+#define THREE_ADDRESS_FILE "./output/address"
+#define INORDER_FILE "inorder"
+#define PREORDER_FILE "preorder"
 
 using namespace std;
 
@@ -56,7 +56,6 @@ class Node{
 Node *parent = new Node("root");
 Node *root= parent;
 stack<Node*> stk;
-fstream aOP;
 
 void Inorder(Node* root){
 
@@ -66,7 +65,6 @@ void Inorder(Node* root){
 			f.open(INORDER_FILE,ios::app);
 			f<<root->name<<" "<<root->oprator<<",";
 			f.close();
-			cout<<" *** "<<root->name<<" *** "<<root->oprator<<endl;
 		Inorder(root->right);
 	}
 
@@ -77,7 +75,6 @@ void Preorder(Node* root){
 		fstream f;
 		f.open(PREORDER_FILE,ios::app);
 		f<<root->name<<" "<<root->oprator<<",";
-		cout<<" *** "<<root->name<<" *** "<<root->oprator<<endl;
 		f.close();
 		Preorder(root->left);
 		Preorder(root->right);
@@ -113,7 +110,6 @@ void showTrunks(Trunk *p)
 
     showTrunks(p->prev);
 
-    cout << p->str;
 }
 
 // Recursive function to print binary tree
@@ -142,7 +138,6 @@ void printTree(Node *root, Trunk *prev, bool isLeft)
     }
 
     showTrunks(trunk);
-    cout<<"["<<root->name<<" , "<<root->oprator<<"]"<<endl;
 
     if (prev)
         prev->str = prev_str;
@@ -156,17 +151,13 @@ int threeaddresscodeutil(Node* nodde, int current_count)
 {	
 	if(nodde->oprator=='N')
 	{
-		aOP.open(THREE_ADDRESS_FILE, ios::app);
-		aOP<<"\tt"<<current_count<<"\t=\t"<<nodde->name<<endl;
-		aOP.close();
+		cout<<"\tt"<<current_count<<"\t=\t"<<nodde->name<<endl;
 		return current_count+1;
 	}
 	int left=threeaddresscodeutil(nodde->left,current_count);
 	int right=threeaddresscodeutil(nodde->right,left);
 	int center=right;
-	aOP.open(THREE_ADDRESS_FILE, ios::app);
-	aOP<<"\tt"<<center<<"\t="<<"\tt"<<left-1<<"\t"<<nodde->oprator<<"\tt"<<right-1<<endl;
-	aOP.close();
+	cout<<"\tt"<<center<<"\t="<<"\tt"<<left-1<<"\t"<<nodde->oprator<<"\tt"<<right-1<<endl;
 	return center+1;
 }
 
@@ -174,13 +165,9 @@ int threeaddresscodeutil(Node* nodde, int current_count)
 //3 address code Form function
 void threeaddresscodefunction(Node* root)
 {
-	aOP.open(THREE_ADDRESS_FILE, ios::app);
-	aOP<<endl<<"Three address code of the expression is given below:"<<endl;	
-	aOP.close();
+	cout<<endl<<"Three address code of the expression is given below:"<<endl;	
 	int count=threeaddresscodeutil(root,0);
-	aOP.open(THREE_ADDRESS_FILE, ios::app);
-	aOP<<"Verification: \n\tNo. of nodes in the tree = "<<count<<endl;
-	aOP.close();
+	cout<<"Verification: \n\tNo. of nodes in the tree = "<<count<<endl;
 }
 
 
@@ -211,9 +198,9 @@ calculation:
 ;
 
 line: T_NEWLINE
-    | mixed_expression T_NEWLINE { aOP.open(THREE_ADDRESS_FILE, ios::out);aOP<<"\n\tResult: "<<$1<<"\n";aOP.close(); makefree();cout<<"Result: "<<$1<<"\n"; cout<<endl; cout<<"Preorder Traversal"<<endl; Preorder(stk.top()); cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);threeaddresscodefunction(stk.top());exit(0);}
-    | expression T_NEWLINE { aOP.open(THREE_ADDRESS_FILE, ios::out);aOP<<"Result: "<<$1<<"\n";aOP.close();cout<<"Result: "<<$1<<"\n";cout<<endl<<"Parse Tree"<<endl; printTree(stk.top(),nullptr,false);Preorder(stk.top());Inorder(stk.top());threeaddresscodefunction(stk.top()); }
-    | T_QUIT T_NEWLINE {   cout<<"\n\t-----Session Terminated-----\n"<<endl;exit(0);}
+    | mixed_expression T_NEWLINE { makefree();cout<<"\n\tResult: "<<$1<<"\n"; Preorder(stk.top());Inorder(stk.top());threeaddresscodefunction(stk.top());exit(0);}
+    | expression T_NEWLINE { makefree();cout<<"Result: "<<$1<<"\n";Preorder(stk.top());Inorder(stk.top());threeaddresscodefunction(stk.top());exit(0); }
+    | T_QUIT T_NEWLINE {exit(0);}
 ;
 
 mixed_expression: T_FLOAT                 		 { $$ = $1; /*cout<<to_string($$)<<endl*/ ;Node *leaf = new Node($1); stk.push(leaf); }
@@ -243,13 +230,9 @@ expression: T_INT						{ $$ = $1; /*cout<<to_string($$)<<endl*/ ;Node *leaf = ne
 %%
 
 int main(int argc,char* argv[]) {
-    FILE* fileInput;
-	if((fileInput=fopen(argv[1],"r"))==NULL)
-        {
-        printf("Error reading files, the program terminates immediately\n");
-        exit(0);
-        }
-	yyin = fileInput;
+    
+	makefree()	; // eita sob somoy chole na
+	yyin = stdin;
 
 	do {
 		yyparse();
@@ -259,7 +242,6 @@ int main(int argc,char* argv[]) {
 }
 
 void yyerror(const char* s) {
-	cout<<"Error"<<endl;
-	fprintf(stderr, "Parse error: %s\n", s);
-	exit(1);
+	cout<<"Error: "<<s<<endl;
+	exit(0);
 }

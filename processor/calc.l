@@ -24,3 +24,4 @@
 ")"		{return T_RIGHT;}
 "exit"		{return T_QUIT;}
 "quit"		{return T_QUIT;}
+[\s\S]*       { return ' '; }

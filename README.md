@@ -1,21 +1,22 @@
-# Parsing-Random-Length-Arithmetic-Expression
+##  Parsing-Random-Length-Arithmetic-Expression
+**BCSE III- Compiler Design Lab Assignment 5** 
 
-## BCSE III- Compiler Design Lab 
-### Assignment 5
-### *Project 10*
-Write a program that will parse an arithmetic expression of any length involvng operators { + , - , * , / } and generate an annotated parse tree displaying the value of the expression.
+*Project 10*  
+Write a program that will parse an arithmetic expression of any length involvng operators `{ + , - , * , / }` and generate an annotated parse tree displaying the value of the expression.  
+Extend the program to generate a three address code of the expression.
 
-Extend the program to generate a three three address code of the expression.
-
-#### How to run the code 
-
-1. lex calc.l
-2. yacc -d calc.y
-3. g++ lex.yy.c y.yab.c -w
-4. ./a.out
-
-##### Group
-1. Dibyajyoti Dhar     - 001710501067 
-2. Devesh Jalan        - 001710501071
-3. Rohit Chattopadhyay - 001710501073
-4. Priti Shaw          - 001710501076
+#### How to run the code
+```
+cd processor
+lex calc.l
+yacc -d calc.y
+g++ lex.yy.c y.tab.c -w
+./a.out
+```
+#### Group Details
+|Roll Number| Name|
+|--|--|
+|0017105010**67**|[Dibyajyoti Dhar](https://github.com/djdhar) |
+|0017105010**71**| [Devesh Jalan](https://github.com/djalan) |
+|0017105010**73**|[Rohit Chattopadhyay](https://github.com/RohitChattopadhyay) |
+|0017105010**76**| [Priti Shaw](https://github.com/PritiShaw) |
