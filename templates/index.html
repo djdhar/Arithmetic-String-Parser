@@ -3,8 +3,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
+	<meta name="description" content="Generate Parse Tree from random length arithmetic expression">
+  	<meta name="keywords" content="lex,yacc,compiler,parse,tree,three,address,treant,js,ju,cse,jadavpur">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compiler Lab Project</title>
-	<!-- stylesheets -->
+	<!-- 	Expression Prompt -->
 	<script>
 		function newExpression(){
 			let exp = prompt('Please Enter your expression');
@@ -25,7 +28,8 @@
 		if(!isPresent){
 			newExpression()
 		}
-	</script>
+	</script>	
+	<!-- 	stylesheets -->
 	<link rel="stylesheet" href="/assets/Treant.css" type="text/css"/>
     <link rel="stylesheet" href="/assets/style.css" type="text/css"/>
 	<link rel="stylesheet" href="/assets/grid.css" type="text/css"/>
@@ -33,28 +37,23 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-		    <div class="col-8-sm">
-				<h2 style="text-align: center;">Anonnated Parse Tree</h2>
+		    <div class="col-sm-8 col-xs-12" style="text-align: center;">
+				<h2>Anonnated Parse Tree</h2>
+				<p style="font-weight: 500;">{{expression}}</p>
 				<div id="tree-annonated"></div>
 			</div>
-			<div id="three-address" class="col-4-sm">
+			<div id="three-address" class="col-sm-4 col-xs-12">
 				<h2>Three Address Code</h2>
 				<pre style="height: 50vh;overflow-y: auto;">{{address}}</pre>
-				<p>
-					<hr/>
-					<marquee onclick="newExpression()" style="cursor: pointer;">Click to enter new expression</marquee>
-					<hr/>
-					<small>
+				<marquee onclick="newExpression()" style="cursor: pointer;border: 1px solid;padding: 0.5em;border-left: none;border-right: none;">Click to enter new expression</marquee>
+				<small>
 					Developed for JU BCSE Compiler Lab Assignment<br/>
 					<em>Members:</em>
-	<br/>67	Dibyajyoti Dhar
-	<br/>71	Devesh Jalan
-	<br/>73	Rohit Rajat Chattopadhyay
-	<br/>76	Priti Shaw
-</pre>
-
+					<br/>67	Dibyajyoti Dhar
+					<br/>71	Devesh Jalan
+					<br/>73	Rohit Rajat Chattopadhyay
+					<br/>76	Priti Shaw
 				</small>
-				</p>
 			</div>
 		</div>
 	</div>
