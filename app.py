@@ -18,6 +18,7 @@ def entry_point(e):
     else:
         three_address = "Enter valid expression"
         json_tree = {"text": {"data":"Please enter the Expression"}}
+        expression = ""
     return render_template('index.html', address=three_address,tree=json_tree,expression=html.unescape(expression))
 
 @app.route('/assets/<path:path>')
