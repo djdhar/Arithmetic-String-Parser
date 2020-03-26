@@ -22,10 +22,10 @@ class Node:
 			text["operator"] = data[1]
 			children = []
 
-			if self.right:
-				children.append(self.right.flatten())
 			if self.left:
 				children.append(self.left.flatten())
+			if self.right:
+				children.append(self.right.flatten())
 
 			if len(children)>0:
 				res["children"] = children
