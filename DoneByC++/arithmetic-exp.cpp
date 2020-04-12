@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
-map<int, char> int2char;
-map<char,int> char2int;
+map<double, char> double2char;
+map<char,double> char2double;
 
 
 #define INORDER_FILE "inorder"
@@ -21,23 +21,23 @@ string extractIntegerWords(string exp)
     string num="";
     for(int i=0;i<exp.size();i++){
         char c = exp[i];
-        if(exp[i]>='0' && exp[i]<='9')
+        if((exp[i]>='0' && exp[i]<='9')|| exp[i]=='.')
             num+=exp[i];
         else
             {
                 newexp+=idx;
                 newexp+=c;
-                int val = stoi(num);
-                int2char[val] = idx;
-                char2int[idx] = val;
+                double val = stod(num);
+                double2char[val] = idx;
+                char2double[idx] = val;
                 idx++;
                 num="";
             }
     }
                 newexp+=idx;
-                int val = stoi(num);
-                int2char[val] = idx;
-                char2int[idx] = val;
+                double val = stod(num);
+                double2char[val] = idx;
+                char2double[idx] = val;
                 idx++;
                 num="";
     return newexp;
@@ -286,7 +286,7 @@ Node* postfixToTree(string s){
     for(int i=0;i<s.size();i++){
         char c = s[i];
         if(!isOperator(c)){
-            Node *leaf = new Node(char2int[c]); stk.push(leaf);
+            Node *leaf = new Node((float)char2double[c]); stk.push(leaf);
             
         }
         else{
