@@ -16,31 +16,34 @@ bool isOperator(char c){
 }
 string extractIntegerWords(string exp) 
 {
-    char idx='a';
-    string newexp="";
-    string num="";
-    for(int i=0;i<exp.size();i++){
-        char c = exp[i];
-        if((exp[i]>='0' && exp[i]<='9')|| exp[i]=='.')
+    string ret="";
+    char symbol='a';
+    for(int i=0;i<exp.size();i++)
+    {
+        char c=exp[i];
+
+        if(isOperator(c)){
+            ret+=c;
+            continue;
+        }
+        if(c=='(' || c==')'){
+            ret+=c;
+            continue;
+        }
+        string num="";
+        while (i<exp.size() && !isOperator(exp[i]) && exp[i]!='(' && exp[i]!=')' )
+        {
             num+=exp[i];
-        else
-            {
-                newexp+=idx;
-                newexp+=c;
-                double val = stod(num);
-                double2char[val] = idx;
-                char2double[idx] = val;
-                idx++;
-                num="";
-            }
+            i++;
+        }
+        i--;
+        ret+=symbol;
+        char2double[symbol]=stod(num);
+        double2char[stod(num)]=symbol;
+        symbol++;
+        
     }
-                newexp+=idx;
-                double val = stod(num);
-                double2char[val] = idx;
-                char2double[idx] = val;
-                idx++;
-                num="";
-    return newexp;
+    return ret;
 }
 
 int prec(char c) 
