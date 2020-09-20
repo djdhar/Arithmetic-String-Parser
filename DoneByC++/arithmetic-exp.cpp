@@ -31,7 +31,6 @@ string extractIntegerWords(string exp)
             }
             else if(i>0 && (isOperator(exp[i-1]) ||  (exp[i-1]=='('))){
                 neg = true;
-                //cout<<"foo\n";
             }
             else{
                 
