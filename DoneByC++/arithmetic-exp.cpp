@@ -18,9 +18,27 @@ string extractIntegerWords(string exp)
 {
     string ret="";
     char symbol='a';
+    bool neg = false;
     for(int i=0;i<exp.size();i++)
     {
         char c=exp[i];
+
+        
+
+        if(c=='-'){
+            if(i==0){
+                neg = true;
+            }
+            else if(i>0 && (isOperator(exp[i-1]) ||  (exp[i-1]=='('))){
+                neg = true;
+                //cout<<"foo\n";
+            }
+            else{
+                
+                ret+=c;
+            }
+            continue;
+        }
 
         if(isOperator(c)){
             ret+=c;
@@ -38,9 +56,14 @@ string extractIntegerWords(string exp)
         }
         i--;
         ret+=symbol;
-        char2double[symbol]=stod(num);
-        double2char[stod(num)]=symbol;
+        double res = stod(num);
+        if(neg)
+            res=-res;
+
+        char2double[symbol]=res;
+        double2char[res]=symbol;
         symbol++;
+        neg = false;
         
     }
     return ret;
