@@ -3,3 +3,4 @@ preorder
 *.exe
 *.yy.c
 *.tab.*
+.vscode
