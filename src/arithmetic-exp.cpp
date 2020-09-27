@@ -13,7 +13,7 @@ map<char, double> char2double;
 
 bool isOperator(char c)
 {
-    if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^')
+    if (c == '+' || c == '-' || c == '*' || c == '/')
         return true;
     return false;
 }

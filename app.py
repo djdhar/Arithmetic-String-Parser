@@ -8,10 +8,10 @@ os.system("chmod +x ./processor/a.out")
 def entry_point(e):
     expression = request.args.get("exp")
     if expression is not None:
-        exp = bytes(html.unescape(expression), 'utf-8')+b'\n'
-        three_address = subprocess.check_output("./processor/a.out", input=exp)
-        three_address = str(three_address,'utf-8')
+        exp = bytes(html.unescape(expression), 'utf-8')+b'\n'        
         try:
+            three_address = subprocess.check_output("./processor/a.out", input=exp)
+            three_address = str(three_address,'utf-8')
             json_tree = json.loads(subprocess.check_output("python treeToJson.py", shell=True))
         except:            
             json_tree = {"text": {"data":"Invalid Expression"}}
