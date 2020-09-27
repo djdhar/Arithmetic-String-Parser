@@ -359,6 +359,8 @@ int main()
     makefree();
     
     string mappedstring = tokenizer(expression);
+    cout << "Tokens : " << mappedstring <<endl;
+
     string postfixstring = infixToPostfix(mappedstring);
 
     Node *parsetree = postfixToTree(postfixstring);
