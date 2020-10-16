@@ -1,4 +1,4 @@
-##  Parsing-Random-Length-Arithmetic-Expression
+##  Arithmetic String Parser
 **BCSE III- Compiler Design Lab Assignment 5** 
 
 *Project 10*  
